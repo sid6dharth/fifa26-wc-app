@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -48,3 +49,25 @@ IMPLEMENTATION.md
 
 #Docs
 Docs/
+CLAUDE.md
+CLAUDE.md
+
+World Cup 2026/
+
+# Supabase CLI local artifacts
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+
+# Turbopack / turbo cache
+.turbo
+
+# editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Windows OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

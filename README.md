@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# World Cup 2026 — Prediction League
 
-## Getting Started
+A mobile-first, invite-only prediction game for a private friends-and-family league.
+Predict scores, fill knockout brackets, climb a live leaderboard. Built with Next.js +
+TypeScript, Tailwind v4, and Supabase. See `CLAUDE.md`, `ARCHITECTURE.md`,
+`DESIGN_SYSTEM.md`, and `IMPLEMENTATION.md` for the full picture.
 
-First, run the development server:
+## Local development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # then fill in your Supabase keys (see below)
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Without Supabase keys the app builds and the landing page renders, but sign-in and any
+authenticated route will error until the env vars are set.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Manual setup (one-time, requires your accounts)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+These steps need dashboards I can't access — do them once:
 
-## Learn More
+1. **Create a Supabase project** (free tier) → Project Settings → API. Copy the
+   `Project URL`, `anon` key, and `service_role` key into `.env.local`
+   (see `.env.example`).
+2. **Apply the schema.** Either:
+   - paste `supabase/migrations/0001_init.sql` into the Supabase SQL Editor and run it,
+     then run `supabase/seed.sql`; **or**
+   - use the CLI: `supabase link --project-ref <ref>` then `supabase db push`.
+3. **Configure auth.** Supabase → Authentication → URL Configuration: set the Site URL
+   (`http://localhost:3000` for dev, your Vercel URL for prod) and add
+   `/auth/callback` to the redirect allowlist. Email magic-link is on by default.
+4. **Bootstrap yourself as admin.** Sign in once with the seeded invite code
+   (`FAMILY-2026`), then in SQL: `update profiles set is_admin = true where id = '<your-user-id>';`
+   (find the id in Authentication → Users).
+5. **Deploy to Vercel.** Import the repo, add the same three env vars to the Vercel
+   project, and deploy. Update the Supabase Site URL / redirect allowlist with the
+   production domain.
 
-To learn more about Next.js, take a look at the following resources:
+## How auth + the invite gate work
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Magic link only** (no passwords). `signInWithOtp` emails a link to `/auth/callback`,
+  which exchanges the code for a session.
+- **Invite-only.** A signed-in user with no `profiles` row is sent to `/onboarding` to
+  redeem an **invite code**. The `redeem_invite` Postgres function (SECURITY DEFINER)
+  validates the code and creates their profile. Manage codes in the `invite_codes` table.
+- Middleware refreshes the session on every request; the `(app)` route group is guarded
+  server-side (never trusts the client clock).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` — dev server
+- `npm run build` — production build
+- `npm run lint` — ESLint
+- `npx prettier --write .` — format

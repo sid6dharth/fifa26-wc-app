@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Design prototype — browser-runtime reference artifact, ported by hand
+    // into src; not part of the build. See IMPLEMENTATION.md "Design prototype".
+    "World Cup 2026/**",
   ]),
 ]);
 

@@ -1,65 +1,62 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Trophy } from "lucide-react";
+import { PitchBackground } from "@/components/layout/pitch-background";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { Button } from "@/components/ui/button";
 
-export default function Home() {
+const MODES = ["Score Predictor", "Bracket", "Group Stage", "Daily Pick'em", "Awards"];
+
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="relative min-h-screen">
+      <PitchBackground />
+      <div className="relative z-[1] flex min-h-screen flex-col">
+        <header className="flex items-center justify-between px-5 py-5">
+          <span className="flex items-center gap-2.5">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent text-white">
+              <Trophy size={20} />
+            </span>
+            <span className="font-display text-[18px] text-ink">WC 2026</span>
+          </span>
+          <ThemeToggle />
+        </header>
+
+        <main className="mx-auto flex w-full max-w-[680px] flex-1 flex-col items-center justify-center gap-6 px-6 text-center">
+          <span className="font-accent rounded-full border-2 border-border-soft bg-surface px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.08em] text-muted">
+            Invite-only · Friends &amp; family
+          </span>
+          <h1 className="font-display text-[clamp(40px,11vw,64px)] leading-[0.95] text-ink">
+            Predict the
+            <br />
+            <span className="text-accent">World Cup.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="max-w-[440px] text-[16px] text-muted">
+            Call the scores, fill your knockout bracket, and climb a live leaderboard with your
+            league. Points score themselves the moment matches finish.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {MODES.map((m) => (
+              <span
+                key={m}
+                className="font-accent rounded-full bg-surface-sunk px-3 py-1.5 text-[12px] font-bold text-muted"
+              >
+                {m}
+              </span>
+            ))}
+          </div>
+
+          <Link href="/home" className="mt-2">
+            <Button variant="primary" size="lg">
+              <Trophy size={18} /> Enter the league
+            </Button>
+          </Link>
+        </main>
+
+        <footer className="px-6 py-6 text-center text-[12px] text-faint">
+          Stadium Summer · No real money, just bragging rights.
+        </footer>
+      </div>
     </div>
   );
 }

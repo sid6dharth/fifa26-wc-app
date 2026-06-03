@@ -1,26 +1,206 @@
 @import "tailwindcss";
 
+/* =====================================================================
+   WORLD CUP 2026 — "Stadium Summer" design tokens
+   Ported from the design prototype (World Cup 2026/tokens.css) into
+   Tailwind v4. Light + Stadium Night dark share ONE token set; only the
+   surface/text/border roles + accent swap between [data-theme] values.
+   See DESIGN_SYSTEM.md — this is the single source of truth for color.
+   ===================================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ---- Raw brand palette (theme-independent, from the spec) ---- */
+  --c-purple: #6b2fd6; /* brand-primary  */
+  --c-red: #e8112d; /* brand-secondary (live/urgent) */
+  --c-lime: #c2f500; /* brand-pop (success/open) */
+  --c-gold: #d4a017; /* reward-gold — REWARDS ONLY */
+  --c-teal: #008c8c;
+  --c-green: #1e8a3c;
+  --c-blue: #0a4fa0;
+  --c-coral: #ff6b4a;
+  --c-sky: #3bb7e3;
+  --c-ink: #14101f;
+  --c-paper: #fbf7ef;
+
+  /* on-brand desaturated-purple greys */
+  --c-grey-100: #ddd6e5;
+  --c-grey-400: #8e869b;
+
+  /* ---- Spacing scale (8px base) ---- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+
+  /* ---- Radius ---- */
+  --r-card: 20px;
+  --r-btn: 14px;
+  --r-input: 12px;
+  --r-pill: 999px;
+
+  /* sticker border width */
+  --bd-w: 3px;
+
+  /* ---- Motion ---- */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+
+  /* default accent (swaps per theme below) */
+  --accent: var(--c-purple);
 }
 
+/* ---- LIGHT — "Stadium Summer" (cream paper, ink text) ---- */
+:root,
+[data-theme="light"] {
+  --bg: #f4ecdd;
+  --bg-2: #ebe0cc;
+  --surface: #ffffff;
+  --surface-2: #fbf7ef;
+  --surface-sunk: #f1ece2;
+  --text: #14101f;
+  --text-muted: #6b6478;
+  --text-faint: #9a93a6;
+  --border: #14101f;
+  --border-soft: #ddd6e5;
+  --on-accent: #ffffff;
+  --accent: var(--c-purple);
+
+  --shadow-subtle: 0 2px 0 rgba(20, 16, 31, 0.1), 0 6px 18px rgba(107, 47, 214, 0.1);
+  --shadow-raised: 0 4px 0 rgba(20, 16, 31, 0.14), 0 14px 30px rgba(107, 47, 214, 0.16);
+  --shadow-overlay: 0 18px 50px rgba(20, 16, 31, 0.28);
+}
+
+/* ---- DARK — "Stadium Night" (deep ink, neon-leaning, glowing gold) ---- */
+[data-theme="dark"] {
+  --bg: #0c0916;
+  --bg-2: #120d1f;
+  --surface: #1b1530;
+  --surface-2: #221a3a;
+  --surface-sunk: #15102a;
+  --text: #fbf7ef;
+  --text-muted: #b3a9c6;
+  --text-faint: #7e7592;
+  --border: #fbf7ef;
+  --border-soft: #322a4c;
+  --on-accent: #ffffff;
+  --accent: var(--c-red);
+
+  /* neon-leaning accents in dark */
+  --c-lime: #d6ff3a;
+  --c-gold: #f4c84a;
+
+  --shadow-subtle: 0 2px 0 rgba(0, 0, 0, 0.5), 0 8px 22px rgba(0, 0, 0, 0.45);
+  --shadow-raised: 0 4px 0 rgba(0, 0, 0, 0.55), 0 18px 38px rgba(0, 0, 0, 0.55);
+  --shadow-overlay: 0 22px 60px rgba(0, 0, 0, 0.7);
+}
+
+/* =====================================================================
+   Expose tokens to Tailwind utilities. `inline` emits var() references so
+   utilities (bg-surface, text-ink, …) re-resolve when [data-theme] flips.
+   ===================================================================== */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-sunk: var(--surface-sunk);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-faint: var(--text-faint);
+  --color-border-strong: var(--border);
+  --color-border-soft: var(--border-soft);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-gold: var(--c-gold);
+  --color-lime: var(--c-lime);
+  --color-red: var(--c-red);
+  --color-green: var(--c-green);
+  --color-purple: var(--c-purple);
+  --color-teal: var(--c-teal);
+  --color-blue: var(--c-blue);
+  --color-coral: var(--c-coral);
+  --color-sky: var(--c-sky);
+  --color-paper: var(--c-paper);
+
+  --radius-card: var(--r-card);
+  --radius-btn: var(--r-btn);
+  --radius-input: var(--r-input);
+
+  --font-display: var(--font-display-family);
+  --font-body: var(--font-body-family);
+  --font-accent: var(--font-accent-family);
+
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body-family), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display / numerals use the heavy display family. */
+.font-display {
+  font-family: var(--font-display-family), "Archivo Black", system-ui, sans-serif;
+}
+.font-accent {
+  font-family: var(--font-accent-family), system-ui, sans-serif;
+}
+
+/* Theme-toggle icons: render both, reveal one based on the active theme.
+   CSS (not React state) decides visibility, so server/client markup matches. */
+.theme-icon-moon,
+.theme-icon-sun {
+  grid-area: 1 / 1; /* stack in the single grid cell of the toggle button */
+}
+.theme-icon-sun {
+  display: none;
+}
+[data-theme="dark"] .theme-icon-moon {
+  display: none;
+}
+[data-theme="dark"] .theme-icon-sun {
+  display: block;
+}
+
+/* Springy button press, ported from the prototype's .wc-btn. */
+.wc-btn {
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    filter var(--dur-fast);
+}
+.wc-btn:active {
+  transform: translateY(2px);
+}
+
+/* Page-enter fade for route transitions. */
+.wc-page-enter {
+  animation: wc-fade-up var(--dur-base) var(--ease-spring) both;
+}
+@keyframes wc-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Honor reduced-motion: drop big animations, keep essential feedback. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -20,7 +20,7 @@ A World Cup 2026 prediction game for a private friends-and-family league. Member
 
 ## How we work (the loop)
 
-1. The user picks a **phase** from `IMPLEMENTATION.md` (each phase is a couple of lines — a high-level intent, intentionally terse).
+1. The user picks a **phase** from `IMPLEMENTATION.md` (each phase is multiple tasks which are a couple of lines — a high-level intent, intentionally terse).
 2. **Expand that phase into a concrete plan** before writing code: break it into ordered tasks, name the files/modules to create or change, list the data touched, call out edge cases and how you'll verify it. Surface any open decisions as questions.
 3. **Present the expanded plan to the user and wait for approval.** Do not start coding until they confirm.
 4. Implement only the approved phase. Stay in scope — don't pull work forward from later phases.
